@@ -1,4 +1,37 @@
 ---
-title: 'Brew Multijob'
+title: '[PAID] Brew Multijob'
 description: 'Effortlessly manage multiple jobs with our intuitive and efficient multijob system, designed for seamless player interaction.'
 ---
+
+# Brew Multijob: Advanced Job Management System
+
+Brew Multijob is a comprehensive system designed to manage multiple jobs for players seamlessly. It provides an intuitive interface and efficient backend to handle job swaps and data retrieval, enhancing player interaction and server management.
+
+## Features
+
+- **Effortless job management** for players
+- **Intuitive interface** for seamless interaction
+- **Efficient backend** for quick data retrieval and job swaps
+- **Server-side only**
+
+## GitHub Repository
+
+You can find the source code and contribute to the project on [GitHub](https://github.com/YourRepo/brew_multijob).
+
+## Exports
+
+### `getMultijobData()`
+
+```lua
+---@param src integer The source ID of the user
+exports.brew_multijob:getMultijobData(src) -- returns the multijob data for the user
+```
+*Retrieves all job-related data for the specified user.*
+
+### `swapPlayerJob()`
+
+```lua
+---@param slotnumber integer The slot number to swap to
+exports.brew_multijob:swapPlayerJob(slotnumber) -- swaps the player's current job to the specified slot
+```
+*Swaps the player's current job to the job associated with the specified slot number.*
