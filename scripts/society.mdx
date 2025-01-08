@@ -14,4 +14,11 @@ Brew Society provides a robust system for creating and managing societies. It in
 
 ## Exports
 
-Currently, there are no exports available. However, more may follow in the future. If you need specific exports, please make a ticket on Discord to request them.
+### `generateJobRanks(jobname)`
+
+```lua
+---@info Server-side
+---@param jobname string The name of the job
+exports.brew_society:generateJobRanks(jobname) -- generates the job ranks in database for the specified job
+```
+*Generates the job ranks for the specified job in the database.*
