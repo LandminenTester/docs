@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Brewery Scripts",
   "logo": {
-    "dark": "/logo/dark.png",
-    "light": "/logo/light.png"
+    "dark": "/logo/text.png",
+    "light": "/logo/text.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
