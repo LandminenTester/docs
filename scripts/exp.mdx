@@ -1,4 +1,117 @@
 ---
-title: 'Brew EXP'
+title: '[Free]Brew EXP'
 description: 'Discover our free API that seamlessly integrates skill systems into both RSG and VORP, unifying them within a single script.'
 ---
+
+
+
+# Brew EXP: Enhanced Skill and Experience API
+
+Brew EXP is a flexible, cross-framework API designed to manage and enhance experience and skill systems. Whether you're working with VORP or another framework, this API provides easy integration and customization options for your server-side skill systems.
+
+It’s fully open-source, giving you full access to the code, so you can refine and extend the API to meet your needs. Enable seamless support for skills across frameworks and get started with a simple configuration.
+
+## Features
+
+- **Easy integration** with any framework
+- Supports **VORP skills data**
+- **Fully open-source** and customizable
+- **Server-side only**
+
+## GitHub Repository
+
+You can find the source code and contribute to the project on [GitHub](https://github.com/LandminenTester/brew_exp).
+
+## Exports
+
+### `getMissingExp()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+exports.brew_exp:getMissingExp(source, category) -- returns the missing exp to level up
+```
+*Calculates and returns the amount of experience needed for the user to reach the next skill level.*
+
+### `getSkillLevel()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+exports.brew_exp:getSkillLevel(source, category) -- returns the current skill level
+```
+*Retrieves the current level of a specified skill for the user.*
+
+### `getSkillExp()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+exports.brew_exp:getSkillExp(source, category) -- returns the current skill exp
+```
+*Returns the current experience points accumulated for a specific skill.*
+
+### `addSkillExp()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+---@param expToAdd number The amount of experience to add
+exports.brew_exp:addSkillExp(source, category, amount) -- add exp to a skill and when reaching maxexp for the level it levels up
+```
+*Adds a specified amount of experience to a skill, leveling up the skill if the maximum experience for the current level is reached.*
+
+### `removeSkillExp()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+---@param expToRemove number The amount of experience to remove
+exports.brew_exp:removeSkillExp(source, category, amount) -- (Only Usable without Vorp Skills) - Remove exp from skill and decrease the level if hitting 0
+```
+*Removes a specified amount of experience from a skill, potentially decreasing the skill level if the experience drops to zero.*
+
+### `setSkillLevel()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+---@param level integer The level to set
+---@param resetExp boolean Whether to reset experience
+exports.brew_exp:setSkillLevel(source, category, level, resetexp) -- (Only Usable without Vorp Skills) - Change the level of a skill to a set level and set in resetexp a true/false if the exp should go to 0
+```
+*Sets a skill to a specified level, with an option to reset the experience points to zero.*
+
+### `getSkill()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+exports.brew_exp:getSkill(source, category) -- get all values of a skill
+```
+*Retrieves all data associated with a specific skill for the user.*
+
+### `getSkills()`
+
+```lua
+---@param source integer The source ID of the user
+exports.brew_exp:getSkills(source) -- get all skills and their values
+```
+*Returns all skills and their respective values for the user.*
+
+### `getSkillConfig()`
+
+```lua
+---@param category string The skill category
+exports.brew_exp:getSkillConfig(category) -- get the config settings of a category
+```
+*Fetches the configuration settings for a specified skill category.*
+
+### `getSkillLabel()`
+
+```lua
+---@param source integer The source ID of the user
+---@param category string The skill category
+exports.brew_exp:getSkillLabel(source, category) -- get the label of the current skill level the player has
+```
+*Returns the label or name associated with the current level of a specified skill.*
