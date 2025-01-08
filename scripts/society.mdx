@@ -22,3 +22,18 @@ Brew Society provides a robust system for creating and managing societies. It in
 exports.brew_society:generateJobRanks(jobname) -- generates the job ranks in database for the specified job
 ```
 *Generates the job ranks for the specified job in the database.*
+
+### `insertIntoSocietyShops(society, slots, name, coords, rank, blip)`
+This function is only used and available when you have syn_shops for vorp in use and enabled the config option `use_syn_shops`.
+```lua
+--@info Server-side
+--@param society string -- The society name to create the shop for
+--@param slots int -- The number of slots the shop will have
+--@param name string -- The name of the shop that will be displayed
+--@param coords string -- The coordinates of the shop as {x, y, z}
+--@param rank int -- The rank to manage the shop
+--@param blip string -- true or false if the blip should be displayed
+exports.brew_society:insertIntoSocietyShops(society, slots, name, coords, rank, blip)
+```
+*Inserts a new shop into the society_shops table in the database.*
+
