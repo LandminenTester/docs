@@ -14,9 +14,34 @@ Brew Multijob is a comprehensive system designed to manage multiple jobs for pla
 - **Efficient backend** for quick data retrieval and job swaps
 - **Server-side only**
 
-## GitHub Repository
+## How to use the commands
 
-You can find the source code and contribute to the project on [GitHub](https://github.com/YourRepo/brew_multijob).
+To use the commands, you need to have the ace command permission on your server.
+Here is a example to enable all commands for the admin group. 
+You need to replace identifier: with a valid identifier of you or the person you want to give the permission to.
+
+```lua
+add_ace group.admin command allow
+add_principal identifier: .... group.admin
+```
+
+If you want to give only the permission to a specific command, you can use the following command.
+Here a example to give the permission to the multijob command to the admin group.
+
+```lua
+add_ace group.admin command.multijob allow
+add_principal identifier: .... group.admin
+```
+
+You can also create own groups and give the permission to them.
+As small additional information for developers: This function is used on the server side to check if player got a specific permission.
+
+```lua
+if IsPlayerAceAllowed(playerSource, "the.permission.name.you.want") then
+    -- do your code here
+end
+```
+
 
 ## Exports
 
