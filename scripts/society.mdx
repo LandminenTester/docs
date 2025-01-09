@@ -24,7 +24,7 @@ exports.brew_society:generateJobRanks(jobname) -- generates the job ranks in dat
 *Generates the job ranks for the specified job in the database.*
 
 ### `insertIntoSocietyShops(society, slots, name, coords, rank, blip)`
-This function is only used and available when you have syn_shops for vorp in use and enabled the config option `use_syn_shops`.
+This function is only used and available when you have syn_shops for vorp in use and enabled the config option `UseSyncShops`.
 ```lua
 --@info Server-side
 --@param society string -- The society name to create the shop for
@@ -37,3 +37,41 @@ exports.brew_society:insertIntoSocietyShops(society, slots, name, coords, rank, 
 ```
 *Inserts a new shop into the society_shops table in the database.*
 
+### `getUserDuty(source)`
+```lua
+--@info Server-side
+--@param source integer -- The source ID of the user
+--@return boolean -- true if the user is on duty, false otherwise
+exports.brew_society:getUserDuty(source)
+```
+*Returns true if the user is on duty, false otherwise and if an source doesnt exist it will return nil.*
+
+### `setUserDutyStatus(source, status)`
+```lua
+--@info Server-side
+--@param source integer -- The source ID of the user
+--@param status boolean -- true or false to set the duty status
+exports.brew_society:setUserDutyStatus(source, status)
+```
+*Sets the duty status for the user.*
+
+### `setLoanForJob(job, jobgrade,loan)`
+```lua
+--@info Server-side
+--@param job string -- The name of the job
+--@param jobgrade int -- The grade of the job
+--@param loan double -- The loan amount
+exports.brew_society:setLoanForJob(job, jobgrade,loan)
+```
+*Sets the loan for a grade of a job.*
+
+
+### `getLoanForJob(job, jobgrade)`
+```lua
+--@info Server-side
+--@param job string -- The name of the job
+--@param jobgrade int -- The grade of the job
+--@return double -- The loan amount or nil if the job or jobgrade doesnt exist
+exports.brew_society:getLoanForJob(job, jobgrade)
+```
+*Returns the loan for a grade of a job.*
