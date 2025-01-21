@@ -15,3 +15,56 @@ Brew Crafting offers a complete solution for creating an exceptional crafting ex
 ## Exports
 
 Currently, there are no exports available. However, more may follow in the future. If you need specific exports, please make a ticket on Discord to request them.
+
+
+## Add blips to crafting locations
+
+If you want to add blips to crafting locations, you can add BlipSettings to a crafting location.
+Here is an example of how to do it:
+
+```lua
+Config.CraftingLocations = {
+	{coords={-292.9522, 792.5771, 118.5612, 62.4914},book = "drugs_book",label ="Example Book for as Prompt", jobs= false, BlipSettings = {name = "Example Book", sprite = "blip_ambient_tithing", color = "PINKISH"} }, 
+}
+```
+
+You set BlipSettings with a name, sprite and color. If you dont have BlipSettings in the line then it will not show a blip.
+
+### Possible colors
+
+Here you can see all the possible colors you can use for the blip.
+
+```lua
+    --LIGHT_BLUE 
+    --DARK_RED     
+    --PURPLE       
+    --ORANGE       
+    --TEAL         
+    --LIGHT_YELLOW 
+    --PINK         
+    --GREEN        
+    --DARK_TEAL    
+    --RED          
+    --LIGHT_GREEN  
+    --TEAL2        
+    --BLUE         
+    --DARK_PUPLE   
+    --DARK_PINK    
+    --DARK_DARK_RED
+    --GRAY         
+    --PINKISH      
+    --YELLOW_GREEN 
+    --DARK_GREEN    
+    --BRIGHT_BLUE   
+    --BRIGHT_PURPLE 
+    --YELLOW_ORANGE 
+    --BLUE2         
+    --TEAL3         
+    --TAN           
+    --OFF_WHITE     
+    --LIGHT_YELLOW2 
+    --LIGHT_PINK    
+    --LIGHT_RED     
+    --LIGHT_YELLOW3 
+    --WHITE         
+```lua
