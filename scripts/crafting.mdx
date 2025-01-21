@@ -16,6 +16,53 @@ Brew Crafting offers a complete solution for creating an exceptional crafting ex
 
 Currently, there are no exports available. However, more may follow in the future. If you need specific exports, please make a ticket on Discord to request them.
 
+## Recipe configuration
+
+Below is a detailed explanation of the recipe configuration options available:
+
+```lua
+{
+    label = "Sugar", -- This is the label that gets displayed in the book
+
+    category = "production", -- This is the category that gets displayed in the book
+
+    recipeImage = "sugar", -- This is the image that gets displayed in the book (itemname -> image from inventory)
+
+    neededSkills = { -- These are the skills that are needed to craft the item. If not set, the player can craft the item without any skills.
+    },
+
+    --failChance = 10, -- This is the chance that the player will fail the recipe. If the player fails, they will lose the items needed.
+
+    receivingExp = { -- These are the skills exp that are gained when the item is crafted.
+        {skill = "drugs", exp = 1, label = "Sugarfactory"},
+    },
+
+    needed = { -- These are the items that are needed to craft the item.
+        {label = "Sugarcube", item = "sugar", amount = 1},
+    },
+
+    duration = 3, -- This is the duration of the recipe in seconds.
+
+    retrieve = { -- This is the item list that is retrieved when the item is crafted.
+        {item = "sugar", label = "Sugarcube", amount = 2}, -- Item that gets given to the player
+    },
+
+    tools = {}, -- These are the tools that are needed to craft the item. With useDurability set to true, the tool
+    -- will lose durability when used. If false, it will not have durability, just need the item to be in the player's inventory.
+
+    giveback = {
+        {item = "sugar", label = "Sugarcube", amount = 2}, -- Item that gets given to the player
+    }, -- This is the item list that is given back to the player when the item is crafted.
+
+    requireJobLocation = false, -- When this is set to true, the player must be in the job location of their current set job to craft the item.
+    -- specialLocation = {"rho_special_location"}, -- This is the list of polyzones where the player can craft the item. Cannot be used with requireJobLocation.
+
+    disclaimer = "This is a disclaimer text, to be displayed to the player.", -- This is the disclaimer text that gets displayed in orange above the craft button.
+
+    description = "Here you can write an amazing description for your recipe or tell the player what they can do with it." -- This is the description text that gets displayed below the recipe title in the details tab.
+}
+```
+
 ## Prompt keys
 
 You can adjust the prompt key and hold time in the config file.
