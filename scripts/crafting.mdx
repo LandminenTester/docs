@@ -1,6 +1,6 @@
 ---
-title: '[PAID] Brew Crafting'
-description: 'A comprehensive solution packed with everything you need to create an exceptional crafting experience.'
+title: "[PAID] Brew Crafting"
+description: "A comprehensive solution packed with everything you need to create an exceptional crafting experience."
 ---
 
 # Brew Crafting: Exceptional Crafting Experience
@@ -12,9 +12,57 @@ Brew Crafting offers a complete solution for creating an exceptional crafting ex
 - **Comprehensive crafting solution** for all your needs
 - **Customizable** to fit your server's requirements
 
+## Events
+
+Here you can find events that you can listen for to make specific actions when a recipe is crafted or failed.
+```lua
+--Server Events
+
+("lc_crafting:craftFailedServer", recipeData, player)
+ -- This event is triggered when a recipe is failed.
+ -- Parameters:
+ -- recipeData: Table -- The whole data of the recipe that is crafted
+ -- player: string -- The source of the player that is crafting the recipe
+
+("lc_crafting:craftEventServer", recipeData, player)
+ -- This event is triggered when a recipe is successful.
+ -- Parameters:
+ -- recipeData: Table -- The whole data of the recipe that is crafted
+ -- player: string -- The source of the player that is crafting the recipe
+
+ ("lc_crafting:CraftingStartedServer", recipeData.duration, player)
+ -- This event is triggered when a recipe is started.
+ -- Parameters:
+ -- recipeData: Table -- The whole data of the recipe that is crafted
+ -- player: string -- The source of the player that is crafting the recipe
+
+--Client Events
+
+("lc_crafting:craftFailedClient", player, recipeData)
+ -- This event is triggered when a recipe is failed.
+ -- Parameters:
+ -- recipeData: Table -- The whole data of the recipe that is crafted
+
+("lc_crafting:craftEventClient", player, recipeData)
+ -- This event is triggered when a recipe is successful.
+ -- Parameters:
+ -- recipeData: Table -- The whole data of the recipe that is crafted
+
+ ("lc_crafting:CraftingStartedClient", player, recipeData.duration)
+ -- This event is triggered when a recipe is started.
+ -- Parameters:
+ -- duration: number -- The duration of the recipe in seconds
+
+
+```
+
 ## Exports
 
-Currently, there are no exports available. However, more may follow in the future. If you need specific exports, please make a ticket on Discord to request them.
+With this export you can open the book from the client side. You need to add as parameter the book name.
+```lua
+--Client Seitig
+exports.brew_crafting:OpenBook(bookName)
+```
 
 ## Recipe configuration
 
@@ -29,6 +77,10 @@ Below is a detailed explanation of the recipe configuration options available:
     recipeImage = "sugar", -- This is the image that gets displayed in the book (itemname -> image from inventory)
 
     neededSkills = { -- These are the skills that are needed to craft the item. If not set, the player can craft the item without any skills.
+    },
+
+    neededJobs = { -- These are the jobs that are needed to see the item in the craftingbook. If not set, the player can see the recipe.
+        { job = "sd_woodworker", grade = 1 },
     },
 
     --failChance = 10, -- This is the chance that the player will fail the recipe. If the player fails, they will lose the items needed.
@@ -60,6 +112,48 @@ Below is a detailed explanation of the recipe configuration options available:
     disclaimer = "This is a disclaimer text, to be displayed to the player.", -- This is the disclaimer text that gets displayed in orange above the craft button.
 
     description = "Here you can write an amazing description for your recipe or tell the player what they can do with it." -- This is the description text that gets displayed below the recipe title in the details tab.
+}
+```
+
+## Book configuration
+
+Below is a detailed explanation of the recipe configuration options available:
+
+```lua
+["drugs_book"] = {          --This is the book name must be same as the item 
+    item = "drugs_book",    --Here you enter the item name of the book you want to make usable if false the book is not binded to a item and can only be used with the prompt methodes
+    command = "sugarbook",  -- /sugarbook opens the book if set to "command = nil" then its disabled or when the line is removed
+    label = "Example Book", --This is the label that gets displayed in the book top left corner
+    jobs = false,           --This is the job setting for the book, if false any job can access this book. If a list of jobs, only those jobs can access this book.
+    skillList = {           --This is the skill list that gets displayed in the book with progressbars, you can decide if you want to display the skill in the book or not.
+        {
+            label = "Sugarfactory", --This is the label that gets displayed in the book
+            skill = "drugs", --This is the skill name like in the vorp core skills.lua
+        },
+        {
+            label = "Schreiner", --This is the label that gets displayed in the book
+            skill = "woodwork", --This is the skill name like in the vorp core skills.lua
+        },
+    },
+    categorys = {
+        ["production"] = "Produce", --this is the category and its label that gets displayed in the book
+
+    },
+    categoryImages = {
+        ["production"] = "sugar", --this is the category and the image that gets displayed in the book (itemname -> image from inventory)
+
+    },
+
+    categoryJobFilter = { -- This is the job filter for the category. If not set, the player can see the recipes in the category when he can open the book.
+        -- When you set a job filter, the player can only see the category when he has the job and the grade. This filters all recipes of a category out without checking requirements set for a specific recipe in this category.
+        ["production"] = {
+            { job = "sd_woodworker", grade = 1 },
+        },
+    },
+
+    recipes = {
+        ...
+    },
 }
 ```
 
@@ -121,7 +215,7 @@ Here is an example of how to do it:
 
 ```lua
 Config.CraftingLocations = {
-	{coords={-292.9522, 792.5771, 118.5612, 62.4914},book = "drugs_book",label ="Example Book for as Prompt", jobs= false, BlipSettings = {name = "Example Book", sprite = "blip_ambient_tithing", color = "PINKISH"} }, 
+	{coords={-292.9522, 792.5771, 118.5612, 62.4914},book = "drugs_book",label ="Example Book for as Prompt", jobs= false, BlipSettings = {name = "Example Book", sprite = "blip_ambient_tithing", color = "PINKISH"} },
 }
 ```
 
@@ -132,36 +226,36 @@ You set BlipSettings with a name, sprite and color. If you dont have BlipSetting
 Here you can see all the possible colors you can use for the blip.
 
 ```lua
-    --LIGHT_BLUE 
-    --DARK_RED     
-    --PURPLE       
-    --ORANGE       
-    --TEAL         
-    --LIGHT_YELLOW 
-    --PINK         
-    --GREEN        
-    --DARK_TEAL    
-    --RED          
-    --LIGHT_GREEN  
-    --TEAL2        
-    --BLUE         
-    --DARK_PUPLE   
-    --DARK_PINK    
+    --LIGHT_BLUE
+    --DARK_RED
+    --PURPLE
+    --ORANGE
+    --TEAL
+    --LIGHT_YELLOW
+    --PINK
+    --GREEN
+    --DARK_TEAL
+    --RED
+    --LIGHT_GREEN
+    --TEAL2
+    --BLUE
+    --DARK_PUPLE
+    --DARK_PINK
     --DARK_DARK_RED
-    --GRAY         
-    --PINKISH      
-    --YELLOW_GREEN 
-    --DARK_GREEN    
-    --BRIGHT_BLUE   
-    --BRIGHT_PURPLE 
-    --YELLOW_ORANGE 
-    --BLUE2         
-    --TEAL3         
-    --TAN           
-    --OFF_WHITE     
-    --LIGHT_YELLOW2 
-    --LIGHT_PINK    
-    --LIGHT_RED     
-    --LIGHT_YELLOW3 
-    --WHITE         
+    --GRAY
+    --PINKISH
+    --YELLOW_GREEN
+    --DARK_GREEN
+    --BRIGHT_BLUE
+    --BRIGHT_PURPLE
+    --YELLOW_ORANGE
+    --BLUE2
+    --TEAL3
+    --TAN
+    --OFF_WHITE
+    --LIGHT_YELLOW2
+    --LIGHT_PINK
+    --LIGHT_RED
+    --LIGHT_YELLOW3
+    --WHITE
 ```
