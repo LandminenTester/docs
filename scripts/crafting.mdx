@@ -56,6 +56,15 @@ Here you can find events that you can listen for to make specific actions when a
 
 ```
 
+## Use vorp_inventory before 4.0 version
+
+When you use vorp_inventory before 4.0, you need to set following value in config to true.
+
+```lua
+    Config.oldInventory = true 
+```
+
+
 ## Exports
 
 With this export you can open the book from the client side. You need to add as parameter the book name.
@@ -91,6 +100,9 @@ Below is a detailed explanation of the recipe configuration options available:
     },
 
     needed = { -- These are the items that are needed to craft the item.
+        --When you want to allow also degrated items in vorp_iventory 4.0 that have more then 1 percent set allowDegraded = true like this
+        -- {label = "Sugarcube", item = "sugar", amount = 1, allowDegraded = true},
+        -- else you dont need to add it at all
         {label = "Sugarcube", item = "sugar", amount = 1},
     },
 
