@@ -146,8 +146,11 @@ Below is a detailed explanation of the recipe configuration options available:
         {
             label = "Schreiner", --This is the label that gets displayed in the book
             skill = "woodwork", --This is the skill name like in the vorp core skills.lua
-        },
+            --You can add a job and a minimum grade to see this skill in the book as progressbar, but 
+            --you can remove the whole line so that it shows for everyone like in the skill above where jobs is removed completely.
+            jobs = {{job = "sdwoodworker", grade = 1}}, },
     },
+
     categorys = {
         ["production"] = "Produce", --this is the category and its label that gets displayed in the book
 
@@ -157,6 +160,7 @@ Below is a detailed explanation of the recipe configuration options available:
 
     },
 
+    --This line is optional and can be removed if not used
     categoryJobFilter = { -- This is the job filter for the category. If not set, the player can see the recipes in the category when he can open the book.
         -- When you set a job filter, the player can only see the category when he has the job and the grade. This filters all recipes of a category out without checking requirements set for a specific recipe in this category.
         ["production"] = {
