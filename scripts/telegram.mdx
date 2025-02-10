@@ -7,6 +7,7 @@ description: "A feature-rich telegram system where you have your own number to s
 
 Brew Telegram offers a complete solution with station, company numbers and more.
 
+This script is only for VORP Framework!
 
 ## Features
 
@@ -41,16 +42,21 @@ With this export you can open a specific station from the client side. This allo
 exports.brew_telegram:openStation(cityLabel)
 ```
 
+## Translation
+
+To translate the telegram system, you need to adjust the language settings in the config.lua and the scripts.js file.
+Also there are some values you need to adjust in the index.html to fully translate the system.
+
 ## Prompt keys
 
-You can adjust the prompt key and hold time in the config file.
+You can adjust the prompt key in the config file.
 
 ```lua
-Config.PromptKey = 0xB2F377E8 -- A
-Config.PromptHoldTime = 1000 -- 1 second (If you want to have a button and not a hold event, set this to 0)
+Config.PromptKey = 0xB2F377E8 -- F
 ```
 
 Here you can find a list of all the prompt keys:
+
 
 ```lua
 Source: https://forum.cfx.re/t/keybind-hashes/1666877/3
