@@ -64,6 +64,9 @@ When you use vorp_inventory before 4.0, you need to set following value in confi
     Config.oldInventory = true 
 ```
 
+## Add images for the needed props nearby
+To add images for the needed props nearby, you need to add the image with the prop name into your
+inventory images folder. Then the inventory will show the image in the needed props.
 
 ## Exports
 
@@ -91,6 +94,12 @@ Below is a detailed explanation of the recipe configuration options available:
 
     neededJobs = { -- These are the jobs that are needed to see the item in the craftingbook. If not set, the player can see the recipe.
         { job = "sd_woodworker", grade = 1 },
+    },
+
+    needAllProps = false, -- When false then you only need one of the props be near the player to craft the item.
+    neededProps = { --If no distance has been set, the default distance will be used that is configured in top of config
+        { prop = "p_campfire02x", label = "Campfire" }, -- prop model and label for the book
+        { prop = "p_campfire02x", label = "Campfire 2", distance = 2.0 }, -- prop model and label for the book with a distance where the prop must be to the player
     },
 
     --failChance = 10, -- This is the chance that the player will fail the recipe. If the player fails, they will lose the items needed.
