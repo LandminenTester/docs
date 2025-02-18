@@ -47,10 +47,37 @@ exports.brew_telegram:openStation(cityLabel)
 To translate the telegram system, you need to adjust the language settings in the config.lua and the scripts.js file.
 Also there are some values you need to adjust in the index.html to fully translate the system.
 
+## Citylabels what are they? and how to use them?
+
+The citylabels are used to send the telegrams to the correct station. If you dont want to use citylabels, you can disable it in the config.lua and in the scripts.js file.
+When you enable the citylabels, you need to add the citylabels in front of the number in the telegram station.
+
+Example:
+
+SD1232
+
+This will send the telegram to the station with the citylabel SD. And the user with the number 1232 will receive the telegram.
+He only can see this telegram at stations with the citylabel SD.
+
+You can configure the citylabels in the config.lua file.
+
+
+## Change the telegram year
+
+You can change the year of the telegram in the scripts.js file.
+Go into the html folder and open the scripts.js file.
+
+There you find the editYear variable.
+
+```javascript
+const editYear = 1881;
+```
+
+This sets the year of the telegram.
+
 
 ## Script configuration
 
-If you dont want to use cityLabels, you can disable it in the config.lua and in the scripts.js file.
 
 ```lua
 Config = {}
