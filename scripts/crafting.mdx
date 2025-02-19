@@ -96,6 +96,9 @@ Below is a detailed explanation of the recipe configuration options available:
         { job = "sd_woodworker", grade = 1 },
     },
 
+    steamids = {"steam:111111111111"}, -- This is the steam id of the player that can see the recipe.
+
+    showNeededProps = true, -- Decides if you show the props in the book.
     needAllProps = false, -- When false then you only need one of the props be near the player to craft the item.
     
     neededProps = { --If no distance has been set, the default distance will be used that is configured in top of config
@@ -176,6 +179,11 @@ Below is a detailed explanation of the recipe configuration options available:
         ["production"] = {
             { job = "sd_woodworker", grade = 1 },
         },
+    },
+
+    --This line is optional and can be removed if not used
+    categorySteamIDFilter = { -- This is the steam id filter for the category. If not set, the player can see the recipes in the category when he can open the book.
+        ["production"] = {"steam:111111111111"}, -- This is the steam id of the player that can see the recipes in the category.
     },
 
     recipes = {
