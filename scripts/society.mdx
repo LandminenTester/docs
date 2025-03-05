@@ -25,6 +25,35 @@ Brew Society is the most advanced and flexible UI based society system on the ma
 - **Block that users that are not unemployed cant be hired until they quit their old job**
 - **Same database structure to still use syn shops with company management - This could get changed in the future due to updates of syn_shops**
 
+## Create a new society
+
+
+### `createsociety`
+
+```lua
+/createsociety [job] [useBlip] [blip] [maxSize] [useDirect] [label]
+-- job: the job id of the society
+-- useBlip: true or false if the blip should be displayed
+-- blip: the blip texture hashname of the society check: https://github.com/femga/rdr3_discoveries/tree/master/useful_info_from_rpfs/textures/blips
+-- maxSize: the max size of the storage of the society to what it can be upgraded
+-- useDirect: true or false if the direct payment should be used
+-- label: the label of the society can be multiple words
+```
+
+```lua
+/addrank [job]
+-- job: the job id of the society
+-- This creates 4 ranks 0 to 3 and rank 3 is the owner of the society will all permissions. Those can be edited later
+
+--if you want to add more ranks you can do so by using the command, when there are already ranks created, it only creates one new rank without any permissions on rank 4:
+-- Give yourself rank 3 after adding all ranks you want and edit the permissions so that 3 is maybe not anymore the boss and for example rank 4 is the new boss.
+/addrank [job]
+-- job: the job id of the society
+
+
+```
+*Creates a new society.*
+
 ## Exports
 
 ### `generateJobRanks(jobname)`
