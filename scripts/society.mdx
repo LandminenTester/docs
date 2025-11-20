@@ -62,17 +62,24 @@ To translate the society script you need to edit the lang file in the language f
 
 ## Exports
 
-### `generateJobRanks(jobname)`
+### `generateJobRanks(society)`
 
 ```lua
----@info Server-side
----@param jobname string The name of the job
-exports.brew_society:generateJobRanks(jobname) -- generates the job ranks in database for the specified job
+--@info Server-side
+--@param society table -- { job = string, grades = { { salary=number, isBoss=boolean }, ... } }
+exports.brew_society:generateJobRanks({
+  job = "police",
+  grades = {
+    { salary = 0, isBoss = false },
+    { salary = 2, isBoss = false },
+    { salary = 5, isBoss = true },
+  }
+}) -- generates the job ranks in database for the specified job
 ```
 *Generates the job ranks for the specified job in the database.*
 
 ### `insertIntoSocietyShops(society, slots, name, coords, rank, blip)`
-This function is only used and available when you have syn_shops for vorp in use and enabled the config option `UseSyncShops`.
+This function is only available when you use syn_shops for VORP and enable the config option `Config.UseSynShops`.
 ```lua
 --@info Server-side
 --@param society string -- The society name to create the shop for
@@ -80,46 +87,155 @@ This function is only used and available when you have syn_shops for vorp in use
 --@param name string -- The name of the shop that will be displayed
 --@param coords string -- The coordinates of the shop as {x, y, z}
 --@param rank int -- The rank to manage the shop
---@param blip string -- true or false if the blip should be displayed
+--@param blip string -- "true" or "false" if the blip should be displayed
 exports.brew_society:insertIntoSocietyShops(society, slots, name, coords, rank, blip)
 ```
-*Inserts a new shop into the society_shops table in the database.*
+*Inserts a new shop into the `society_shops` table in the database.*
+
+### `insertIntoSociety(job, ledger, storageLimit, storageCoords, wardrobeCoords, daily)`
+
+```lua
+--@info Server-side
+--@param job string -- Society/job name
+--@param ledger number -- Starting ledger amount
+--@param storageLimit number -- Initial storage limit
+--@param storageCoords string|json -- Storage access coords (JSON string)
+--@param wardrobeCoords string|json -- Wardrobe access coords (JSON string)
+--@param daily number -- Daily payout toggle (0/1)
+exports.brew_society:insertIntoSociety("police", 0, 100, json.encode({x=1,y=2,z=3}), json.encode({x=4,y=5,z=6}), 0)
+```
+*Creates a base entry in `society_ledger` and in-memory state.*
+
+### `setLoanForJob(job, jobgrade, loan)`
+
+```lua
+--@info Server-side
+--@param job string -- Society/job name
+--@param jobgrade integer -- Grade index
+--@param loan number -- Salary/loan amount
+exports.brew_society:setLoanForJob("police", 2, 10)
+```
+*Updates the salary for the given job grade.*
 
 ### `getUserDuty(source)`
+
 ```lua
 --@info Server-side
 --@param source integer -- The source ID of the user
---@return boolean -- true if the user is on duty, false otherwise
+--@return boolean -- true if on duty, false otherwise (defaults to false)
 exports.brew_society:getUserDuty(source)
+-- alias (case variant):
+exports.brew_society:GetUserDuty(source)
 ```
-*Returns true if the user is on duty, false otherwise and if an source doesnt exist it will return nil.*
+*Returns the current duty status for a player; defaults to false if unknown.*
 
-### `setUserDutyStatus(source, status)`
+### `setUserDutyStatus(source, duty)`
+
 ```lua
 --@info Server-side
 --@param source integer -- The source ID of the user
---@param status boolean -- true or false to set the duty status
-exports.brew_society:setUserDutyStatus(source, status)
+--@param duty boolean -- New duty state
+exports.brew_society:setUserDutyStatus(source, true)
+-- alias (case variant):
+exports.brew_society:SetUserDutyStatus(source, true)
 ```
-*Sets the duty status for the user.*
+*Sets a player's duty status in memory.*
 
-### `setLoanForJob(job, jobgrade,loan)`
+### `GetMenuLock(society)`
+
 ```lua
 --@info Server-side
---@param job string -- The name of the job
---@param jobgrade int -- The grade of the job
---@param loan double -- The loan amount
-exports.brew_society:setLoanForJob(job, jobgrade,loan)
+--@param society string -- Society name
+--@return table|boolean -- { lock = boolean, _source = number|nil } or false
+exports.brew_society:GetMenuLock("police")
 ```
-*Sets the loan for a grade of a job.*
+*Gets the current menu lock state for a society, or false if none.*
 
+### `ResetMenuLockServer(source)`
 
-### `getLoanForJob(job, jobgrade)`
 ```lua
 --@info Server-side
---@param job string -- The name of the job
---@param jobgrade int -- The grade of the job
---@return double -- The loan amount or nil if the job or jobgrade doesnt exist
-exports.brew_society:getLoanForJob(job, jobgrade)
+--@param source integer -- Player source
+exports.brew_society:ResetMenuLockServer(source)
 ```
-*Returns the loan for a grade of a job.*
+*Releases the menu lock if this player currently holds it.*
+
+### `GenerateSocietySettings()`
+
+```lua
+--@info Server-side
+--@return table -- Societies data keyed by job name
+exports.brew_society:GenerateSocietySettings()
+```
+*Builds and returns a snapshot of all societies (label, limits, coords, blips).* 
+
+### `CreateBill(sender, receiver, amount, description)`
+
+```lua
+--@info Server-side
+--@param sender integer -- Sender source
+--@param receiver integer -- Receiver source
+--@param amount number -- Bill amount
+--@param description string -- Description
+exports.brew_society:CreateBill(sender, receiver, 100, "Service fee")
+```
+*Creates a bill if players are within range; writes to DB and updates state.*
+
+### `AddRank(source, society, gradeSettings?)`
+
+```lua
+--@info Server-side
+--@param source integer -- Caller source (for feedback)
+--@param society string -- Society name
+--@param gradeSettings table?|nil -- Optional complete rank definition
+exports.brew_society:AddRank(source, "police", { job="police", jobgrade=4, jobLabel="Sergeant", salary=5, isBoss=false })
+```
+*Adds a new rank. If omitted, a default rank is appended.*
+
+### `CreateSociety(...)`
+
+```lua
+--@info Server-side
+-- Note: Export exists in this build, but no implementation is provided.
+-- Prefer the NUI/callback path `brew_society:Callback:createSocietyFromNui`.
+```
+*Placeholder export in this version.*
+
+### `AddToLedger(job, money)`
+
+```lua
+--@info Server-side
+--@param job string -- Society/job name
+--@param money number -- Amount to add (negative subtracts)
+exports.brew_society:AddToLedger("police", -500)
+```
+*Adjusts the society ledger (DB and memory); negative values subtract.*
+
+### `GetLedeger(job)`
+
+```lua
+--@info Server-side
+--@param job string -- Society/job name
+--@return number -- Current ledger balance (0 if missing)
+exports.brew_society:GetLedeger("police")
+```
+*Returns the current ledger amount.*
+
+### `AddTransaction(job, amount, description)`
+
+```lua
+--@info Server-side
+--@param job string -- Society/job name
+--@param amount number -- Transaction amount (negative or positive)
+--@param description string -- Description text
+--@return boolean -- true on success
+exports.brew_society:AddTransaction("police", -100, "Storage upgrade fee")
+```
+*Inserts a transaction row and updates in-memory history. Shows the entry in the society menu as transaction*
+
+### `getPlayerDutyStatus()`
+
+```lua
+--@info Client-side
+-- Note: Returns the duty status of the triggering client
+```
