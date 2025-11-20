@@ -237,5 +237,7 @@ exports.brew_society:AddTransaction("police", -100, "Storage upgrade fee")
 
 ```lua
 --@info Client-side
--- Note: Returns the duty status of the triggering client
+-- Note: Get duty status of local player that triggers it.
+exports.brew_society:getPlayerDutyStatus()
 ```
+*Client helper uses a callback to receive the duty status of the calling player*
