@@ -26,6 +26,15 @@ Brew Society is the most advanced and flexible UI based society system on the ma
 - **Same database structure to still use syn shops with company management - This could get changed in the future due to updates of syn_shops**
 
 ## Create a new society
+Easiest method:
+Step 1: use open creator command
+*This opens a custom ui where you can create the society, with ranks and permissions and all other settings.*
+```lua
+/opencreator
+```
+You need to be whitelisted in the steamid list!
+
+---
 
 Step 1: create the society
 *This adds the society to the database and local storage.*
@@ -59,6 +68,182 @@ Step 3: Optional - Add more ranks to the society
 
 To translate the society script you need to edit the lang file in the language folder, the index.html in the html folder and also the translation.js in the html folder.
 
+## Commands
+
+All commands are gated by `Config.CommandSystem` feature flags (and additional feature flags like `Config.UseSynShops`, `Config.OpeningBlips`, `Config.UseBellStation`, or `Config.Debug`). This document lists each command, its purpose, arguments, permissions, and notes.
+
+Notation:
+- `<int>` integer argument
+- `<string>` string argument
+- Optional arguments shown in brackets `[arg]`
+- Boss-only refers to society rank with `isBoss = true`
+
+---
+### `/createsociety <job> <useBlip> <blipSprite> <maxStorageSize> <useDirectPayment> <placementRange> <label...>`
+Config flag: `Config.CommandSystem.createSociety.enabled`
+```lua
+-- Creates a new society at the player's current coordinates.
+-- Args (all required):
+--  job (string)                -- internal job name
+--  useBlip ("true"|"false")   -- enable blip
+--  blipSprite (number)         -- blip sprite id
+--  maxStorageSize (number)     -- maximum storage size
+--  useDirectPayment ("true"|"false") -- direct payment mode
+--  placementRange (number)     -- allowed distance for placing storage/wardrobe
+--  label (string...)           -- society label (remaining args concatenated)
+-- Example:
+-- /createsociety brewery true 189 500 true 25 Brewery Company
+```
+Creates the base ledger entry and initializes local society data. All arguments must be present.
+
+---
+### `/addrank <job>`
+Config flag: `Config.CommandSystem.addRank.enabled`
+```lua
+-- Adds a new rank to the specified society (default template) or initializes defaults if first time.
+-- Arg: job (string)
+-- Example: /addrank brewery
+```
+Appends a new rank with default permissions; creates starter ranks if society did not have any.
+
+---
+### `/toggleblip`
+Config flags: `Config.OpeningBlips` AND `Config.CommandSystem.toggleblip.enabled`
+Permission: Player must have `toggleBlip` permission in current job rank.
+```lua
+-- Toggles company blip color between DARK_RED and LIGHT_GREEN for your society.
+```
+Switches color of the active society blip, then updates clients.
+
+---
+### `/placestorage`
+Config flag: `Config.CommandSystem.placeStorage.enabled`
+Permission: Boss-only (`isBoss = true`) within `placementRange` radius of boss coordinates.
+```lua
+-- Places the society storage access point at your current position (if within placementRange).
+```
+Stores encoded coordinates in ledger and sends update.
+
+---
+### `/placewardrobe`
+Config flag: `Config.CommandSystem.placeWardrobe.enabled`
+Permission: Boss-only; same distance/range rules as `/placestorage`.
+```lua
+-- Places the society wardrobe access point at your current position.
+```
+Stores encoded coordinates and distributes data.
+
+---
+### `/writebill`
+Config flag: `Config.CommandSystem.writebill.enabled`
+Permission: Must have `writeBills` permission in current society.
+Interactive flow: opens bill creator, then target player accepts/refuses.
+```lua
+-- Initiates bill creation flow via UI callbacks.
+```
+Generates a bill if target accepts, writes to DB and ledger when paid later.
+
+---
+### `/duty`
+Config flag: `Config.CommandSystem.duty.enabled`
+```lua
+-- Toggles your duty status (on/off). No arguments.
+```
+Flips duty state; broadcasts feedback via notifications.
+
+---
+### `/hireplayer <targetId>`
+Config flag: `Config.CommandSystem.hirePlayer.enabled`
+Permission: Must have `hirePlayer` permission.
+Additional logic: Can be blocked if target already has a job (`Config.BlockHiringPlayerWithJob`).
+```lua
+-- Sends a hire offer to target player. On accept, assigns them your job grade 0.
+-- Arg: targetId (int)
+-- Example: /hireplayer 27
+```
+Updates DB, fires job change event, and sends success/refusal notifications.
+
+---
+### `/setjob <targetId> <job> <jobgrade>`
+Config flag: `Config.CommandSystem.setJob.enabled`
+Admin/privileged usage implied (registered with restricted flag = true).
+```lua
+-- Force-sets job and grade for target player.
+-- Args:
+--  targetId (int)
+--  job (string)
+--  jobgrade (int)
+-- Example: /setjob 12 brewer 2
+```
+Directly updates character job/grade in DB and triggers change event.
+
+---
+### `/opencreator`
+Config flag: `Config.CommandSystem.openCreator.enabled`
+Access: Steam identifier must be in `Config.AccessSteamIdsForCreator`.
+```lua
+-- Opens the society creation UI (NUI) for authorized users.
+```
+Client UI is opened if access is validated.
+
+---
+### `/listcalls`
+Config flags: `Config.UseBellStation` AND `Config.CommandSystem.listCalls.enabled`
+```lua
+-- Opens UI listing active bell station calls.
+```
+Triggers client event to open calls list interface.
+
+---
+### `/checkdutystatus <targetId>`
+Config flag: `Config.CommandSystem.checkDutyStatus.enabled`
+Restricted (registered with admin flag = true).
+```lua
+-- Checks a player's duty status and shows a notification.
+-- Arg: targetId (int)
+-- Example: /checkdutystatus 42
+```
+Uses exported duty logic; returns true/false in notification.
+
+---
+### Debug-Only Commands (require `Config.Debug = true`)
+Provided for development/testing.
+
+#### `/resetMenuLock <sourceId>`
+```lua
+-- Resets (unlocks) the menu lock for specified source.
+```
+
+#### `/checkJobSalary <job>`
+```lua
+-- Prints salaries for all ranks of the job.
+```
+
+#### `/setLoanForJob <job> <jobgrade> <loan>`
+```lua
+-- Sets salary/loan for a specific job grade.
+```
+
+#### `/initScriptbyPlayers`
+```lua
+-- Broadcasts client initialization event to all players.
+```
+
+---
+## Permission Summary
+Permissions checked against current player's society rank:
+- `toggleBlip` for `/toggleblip`
+- `isBoss` (rank flag) for placement commands
+- `writeBills` for `/writebill`
+- `hirePlayer` for `/hireplayer`
+Other commands rely on config flags or admin registration (`restricted = true`).
+
+## Notes
+- Society range placement uses `placementRange` from society ledger and compares against boss coordinates.
+- Bill creation uses a confirmation modal
+- Hiring respects blocking config to prevent hiring players already employed.
+- Creator UI access uses SteamID whitelist.
+- Debug commands should not be exposed in production.
 
 ## Exports
 
