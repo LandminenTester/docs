@@ -21,6 +21,7 @@ config = {
     "site_url": "https://landminentester.github.io/docs/",
     "repo_url": "https://github.com/LandminenTester/docs",
     "docs_dir": "content", "site_dir": "site",
+    "edit_uri": "edit/main/content/",
     "theme": {"name": "readthedocs", "highlightjs": True},
     "markdown_extensions": ["tables", "fenced_code", "toc"],
     "nav": nav,
