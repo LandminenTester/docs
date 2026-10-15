@@ -117,7 +117,7 @@ They were computed with Python's `hmac` module and are asserted in `tests/Ldb.Te
 ## Database privileges
 
 Use two database accounts. The data account never needs structure changes; the schema account is only used by `schema/sync`.
-Ready-to-run scripts are in [`docker/grants`](https://github.com/LandminenTester/lt-database-api/tree/bd4261b8cbd7810d31304237ed79ec649996b3d4/docker/grants).
+Ready-to-run scripts are in [`docker/grants`](https://github.com/LandminenTester/lt-database-api/tree/8432df53f816d519143be5deed671057f69cd724/docker/grants).
 
 | Engine | Data account (`DmlConnectionString`) | Schema account (`DdlConnectionString`) |
 |---|---|---|

@@ -41,7 +41,7 @@ protocol.
 
 ## Cryptography notes
 
-HMAC-SHA-256, SHA-256, base64url and the JSON handling are small managed implementations in [`sh/Pure`](https://github.com/LandminenTester/lt-database/tree/e5ca78880de82106f89f93d9d5b5750d686457ba/sh/Pure), because the
+HMAC-SHA-256, SHA-256, base64url and the JSON handling are small managed implementations in [`sh/Pure`](https://github.com/LandminenTester/lt-database/tree/833d04b120b37be6de2286582528a6ef3493cd13/sh/Pure), because the
 sandbox does not document platform cryptography. They are tested against `System.Security.Cryptography` for every input length
 around the block boundaries, against RFC 4231 test cases, and against the API's published signing vectors. Nonces are unique per
 request (counter, clock and random bytes mixed); they do not need to be secret. If the game server's clock is wrong, the connector

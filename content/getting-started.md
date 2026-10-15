@@ -1,62 +1,37 @@
-# End-to-end setup
+# Getting started
 
-## 1. Run the API and a database
+This is the documentation library for LandminenTester BlackICE resources. Start with the resource you want to use.
+The guides cover installation, configuration, operation, building from source and API usage.
 
-For a disposable local trial, install Docker and Compose, then:
+## Choose a resource
 
-```sh
-git clone https://github.com/LandminenTester/lt-database-api
-cd lt-database-api
-cp .env.example .env
-# Edit .env: replace the example API secret and database password with random values.
-docker compose --profile postgres up --build -d
-curl http://127.0.0.1:8080/v1/health
-```
+### BlackICE Server Panel
 
-Use `mysql` or `mongodb` instead of `postgres` for another engine. Health GET is public and does not verify access to
-your database; the signed health operation does. Follow [deployment](lt-database-api/docs/DEPLOYMENT.md) for production,
-TLS, least-privilege database users, backup and service installation. Keep the local trial port on loopback.
+A standalone web interface for managing a BlackICE server, its console, accounts, logs and bundles.
+Follow the [panel overview](webpanel/README.md) and your platform guide:
+[Windows](webpanel/docs/windows.md), [Linux](webpanel/docs/linux.md) or [Docker](webpanel/docs/docker.md).
 
-## 2. Install the server and optional panel
+### lt_database
 
-Use a BlackICE server you control. The [panel installation guide](webpanel/README.md) covers Windows, Linux and Docker,
-first-time administrator setup, game server installation and ports. Start and confirm the server before adding bundles.
-Production servers should follow [panel operations](webpanel/docs/operations.md) and its HTTPS proxy instructions.
+A server-side connector for scripts that need database persistence. It calls lt-database-api using signed HTTP requests.
+Start with [bundle installation](lt-database/docs/INSTALL.md) or follow the [database pair quickstart](database-quickstart.md).
 
-## 3. Install lt-database
+Its default folder is `lt_database`, shared C# types use `LtDatabase`, the helper uses `LtDatabaseClient`, and console
+commands start with `lt-db-`. Start the connector before bundles that consume its exports.
 
-Download the bundle ZIP from [releases](https://github.com/LandminenTester/lt-database/releases).
-Extract into `<server>/data/ugc/lt_database/`. Follow the [complete bundle installation](lt-database/docs/INSTALL.md)
-to allow your API host in `config.toml`, create the private `vfs/database.json` and `vfs/database.secret`, and restrict
-allowed namespaces on **both** sides. The key ID and secret must match the API configuration.
+### lt-database-api
 
-```text
-start lt_database
-lt-db-health
-```
+An independently hosted HTTP service in front of PostgreSQL, MySQL/MariaDB or MongoDB. It is the backend required by
+lt_database and can also serve other signed HTTP clients. Start with [deployment](lt-database-api/docs/DEPLOYMENT.md)
+and the [HTTP API reference](lt-database-api/docs/API.md).
 
-A successful signed health response with `database: true` verifies the connector, signing and database connection.
-Start consumer bundles after the connector. Add that order to `server.cfg` for automatic startup.
+## Read a resource guide
 
-## 4. Add a consumer
+Check its requirements, configure it for your environment, then use its documented checks before relying on it.
+Use the resource's own build guide when developing from source. Use its operations and security guides for updates,
+credentials, backups and troubleshooting.
 
-Follow [usage](lt-database/docs/USAGE.md) to include the shared contracts and helper in your server bundle. Declare
-your schema with `Db.Sync` and wait for success before writing. Use the [compiled recipes](lt-database/docs/RECIPES.md)
-for CRUD, paging, counters and error handling. [Reference](lt-database/docs/REFERENCE.md) lists every export and builder.
+## Contribute or report an issue
 
-## 5. Choose live or buffered writes
-
-Leave `Ldb:WriteBehind:Enabled` false for live writes. To buffer, configure the API as described in
-[write-behind](lt-database-api/docs/WRITE-BEHIND.md). For **only fixed times** set `FlushIntervalSeconds: 0` and
-`FlushThreshold: 0`; set `FlushAt` and `TimeZone`. Otherwise the interval or threshold may flush earlier.
-
-Queued receipts do not contain generated IDs or affected row counts. Check `Db.IsQueued(result)`. Use `Db.Flush(ns, done)`
-or `immediate: true` when current data is required. Protect the journal volume and monitor pending/dead-lettered writes.
-Delivery is at least once across crashes; prefer idempotent writes and stable keys.
-
-## 6. Validate and maintain
-
-Run the [38-step smoke scenario](lt-database/examples/smoke/README.md) against a disposable live namespace. For API
-development, run `dotnet test -c Release` with Docker running to include all three engine suites.
-Back up panel state, database data and pending journals; test restoration. Flush pending writes and check the result
-before database maintenance. Follow the product operations guides for key rotation, upgrades and rollback.
+Each resource links to its own source repository. Report a product bug there. For documentation improvements,
+see [sources and maintenance](sources.md). Sensitive findings belong in the relevant product's security reporting channel.

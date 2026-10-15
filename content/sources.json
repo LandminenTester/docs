@@ -32,7 +32,7 @@
   },
   "lt-database": {
     "repository": "LandminenTester/lt-database",
-    "commit": "e5ca78880de82106f89f93d9d5b5750d686457ba",
+    "commit": "833d04b120b37be6de2286582528a6ef3493cd13",
     "files": [
       "LICENSE",
       "NOTICE.md",
@@ -50,7 +50,7 @@
   },
   "lt-database-api": {
     "repository": "LandminenTester/lt-database-api",
-    "commit": "bd4261b8cbd7810d31304237ed79ec649996b3d4",
+    "commit": "8432df53f816d519143be5deed671057f69cd724",
     "files": [
       "LICENSE",
       "README.md",

@@ -1,27 +1,75 @@
 {
   "site_name": "LandminenTester Docs",
-  "site_description": "Build, configure and operate the BlackICE panel, lt-database and lt-database-api.",
+  "site_description": "Documentation for LandminenTester bundles, tools and resources for BlackICE servers.",
   "site_url": "https://landminentester.github.io/docs/",
   "repo_url": "https://github.com/LandminenTester/docs",
   "docs_dir": "content",
   "site_dir": "site",
+  "edit_uri": "edit/main/content/",
   "theme": {
-    "name": "readthedocs",
-    "highlightjs": true
+    "name": "mkdocs",
+    "custom_dir": "theme",
+    "highlightjs": false
   },
   "markdown_extensions": [
     "tables",
     "fenced_code",
-    "toc"
+    {
+      "toc": {
+        "permalink": "#"
+      }
+    },
+    {
+      "codehilite": {
+        "guess_lang": false
+      }
+    }
   ],
+  "extra": {
+    "resources": [
+      {
+        "name": "BlackICE Server Panel",
+        "kind": "Server management",
+        "description": "Manage your server, console, users and bundles from one web interface.",
+        "icon": "panel",
+        "path": "webpanel/README.md",
+        "guide": "webpanel/docs/operations.md",
+        "reference": "webpanel/API.md",
+        "repository": "https://github.com/LandminenTester/blackice-server-panel",
+        "relation": "Independent resource"
+      },
+      {
+        "name": "lt_database",
+        "kind": "Server bundle",
+        "description": "Declare schemas and read or write database records directly from your server bundles.",
+        "icon": "database",
+        "path": "lt-database/README.md",
+        "guide": "lt-database/docs/INSTALL.md",
+        "reference": "lt-database/docs/REFERENCE.md",
+        "repository": "https://github.com/LandminenTester/lt-database",
+        "relation": "Requires lt-database-api"
+      },
+      {
+        "name": "lt-database-api",
+        "kind": "Database service",
+        "description": "A signed HTTP API for PostgreSQL, MySQL and MongoDB. The backend for lt_database.",
+        "icon": "api",
+        "path": "lt-database-api/README.md",
+        "guide": "lt-database-api/docs/DEPLOYMENT.md",
+        "reference": "lt-database-api/docs/API.md",
+        "repository": "https://github.com/LandminenTester/lt-database-api",
+        "relation": "Used by lt_database"
+      }
+    ]
+  },
   "nav": [
     {
       "Start": [
         {
-          "Welcome": "README.md"
+          "Resource library": "README.md"
         },
         {
-          "End-to-end setup": "getting-started.md"
+          "Getting started": "getting-started.md"
         },
         {
           "Sources and maintenance": "sources.md"
@@ -78,9 +126,12 @@
       ]
     },
     {
-      "lt-database": [
+      "lt_database": [
         {
           "Overview": "lt-database/README.md"
+        },
+        {
+          "Database pair quickstart": "database-quickstart.md"
         },
         {
           "Install": "lt-database/docs/INSTALL.md"

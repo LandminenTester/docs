@@ -2,15 +2,31 @@
 
 **Read the public documentation: [landminentester.github.io/docs](https://landminentester.github.io/docs/).**
 
-Build, installation, configuration, maintenance, API references and examples for:
+The public library for LandminenTester bundles, tools and resources for BlackICE servers. Each resource has its own
+installation, configuration, maintenance guides, API reference and examples. Currently documented:
 
 * [BlackICE Server Panel](https://github.com/LandminenTester/blackice-server-panel)
-* [lt-database](https://github.com/LandminenTester/lt-database)
+* [lt_database](https://github.com/LandminenTester/lt-database)
 * [lt-database-api](https://github.com/LandminenTester/lt-database-api)
 
 The Markdown lives in `content/`. It is compatible with GitBook Git Sync and is also published with MkDocs/GitHub Pages,
 so readers do not need an account. Existing Brewery/Mintlify files in `scripts/`, `images/`, `logo/`, `introduction.mdx`
 and `mint.json` are preserved.
+
+The panel is an independent resource. The database connector requires the database API; the library does not imply
+any other dependency between resources.
+
+## Add a resource or maintain the theme
+
+Add its guides to `content/`, add its navigation group to `navigation.json`, and add its directory entry to
+`resources.json`. The homepage renders that resource manifest, so future resources do not require editing the theme.
+Update `content/README.md` as the Markdown/GitBook counterpart of the library introduction.
+
+The public site uses the custom `theme/main.html` layout and local assets in `content/assets/`. The cyberpunk theme
+includes responsive resource navigation, a local full-text search dialog, syntax highlighting, copyable code and a
+sticky article index. Fonts are self-hosted with their OFL licenses. No external analytics or font requests are needed.
+`DESIGN.md` records its tokens and behavior. GitBook imports the Markdown and navigation; GitBook-hosted pages use that
+service's own appearance settings rather than this MkDocs template.
 
 ## Update from product repositories
 
