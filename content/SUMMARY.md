@@ -2,8 +2,8 @@
 
 ## Start
 
-* [Resource library](README.md)
-* [Getting started](getting-started.md)
+* [Welcome](README.md)
+* [End-to-end setup](getting-started.md)
 * [Sources and maintenance](sources.md)
 
 ## BlackICE Server Panel
@@ -24,10 +24,9 @@
 * [Development and architecture](webpanel/docs/development.md)
 * [Security](webpanel/SECURITY.md)
 
-## lt_database
+## lt-database
 
 * [Overview](lt-database/README.md)
-* [Database pair quickstart](database-quickstart.md)
 * [Install](lt-database/docs/INSTALL.md)
 * [Configuration](lt-database/docs/CONFIGURATION.md)
 * [Usage and examples](lt-database/docs/USAGE.md)

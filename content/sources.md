@@ -1,7 +1,7 @@
 # Source revisions and maintenance
 
 The machine-readable [sources.json](sources.json) records the public source commit and imported file list for each product.
-The resource source repositories are authoritative. The imported guides retain their original licenses and notices.
+The source repositories are authoritative. The imported guides retain their original licenses and notices.
 
 To update the documentation, commit source changes, then run `scripts/sync_docs.py` as described in the
 [documentation repository](https://github.com/LandminenTester/docs). Review the diff, build with MkDocs, check links,

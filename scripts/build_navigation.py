@@ -4,11 +4,6 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 navigation = json.loads((root / "navigation.json").read_text(encoding="utf-8"))
-resources = json.loads((root / "resources.json").read_text(encoding="utf-8"))
-for resource in resources:
-    for field in ("path", "guide", "reference"):
-        if not (root / "content" / resource[field]).is_file():
-            raise SystemExit(f"Resource target missing: {resource[field]}")
 summary = ["# Summary", ""]
 nav = []
 for group, pages in navigation.items():
@@ -22,14 +17,12 @@ for group, pages in navigation.items():
 (root / "content/SUMMARY.md").write_text("\n".join(summary), encoding="utf-8")
 config = {
     "site_name": "LandminenTester Docs",
-    "site_description": "Documentation for LandminenTester bundles, tools and resources for BlackICE servers.",
+    "site_description": "Build, configure and operate the BlackICE panel, lt-database and lt-database-api.",
     "site_url": "https://landminentester.github.io/docs/",
     "repo_url": "https://github.com/LandminenTester/docs",
     "docs_dir": "content", "site_dir": "site",
-    "edit_uri": "edit/main/content/",
-    "theme": {"name": "mkdocs", "custom_dir": "theme", "highlightjs": False},
-    "markdown_extensions": ["tables", "fenced_code", {"toc": {"permalink": "#"}}, {"codehilite": {"guess_lang": False}}],
-    "extra": {"resources": resources},
+    "theme": {"name": "readthedocs", "highlightjs": True},
+    "markdown_extensions": ["tables", "fenced_code", "toc"],
     "nav": nav,
     "exclude_docs": "SUMMARY.md\n",
     "validation": {"links": {"not_found": "warn", "unrecognized_links": "warn", "anchors": "warn"}},
